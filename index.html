@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Scrapbook | Front-End Demo</title>
+<meta name="description" content="A front-end demo scrapbook built with plain HTML, CSS and JavaScript. All content is placeholder.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7d6e0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Web Scrapbook | Front-End Demo">
+<meta property="og:description" content="A front-end demo scrapbook built with plain HTML, CSS and JavaScript. All content is placeholder.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%92%3C/text%3E%3C/svg%3E">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="orb orb-3"></span>
+  <span class="orb orb-4"></span>
+</div>
+<div class="bg-particles" id="bgParticles" aria-hidden="true"></div>
+
+
+<svg class="thread" width="2" height="100%" preserveAspectRatio="none" aria-hidden="true">
+  <line x1="1" y1="0" x2="1" y2="100%" />
+</svg>
+<div class="thread-heart" id="threadHeart" aria-hidden="true">♥</div>
+
+
+<nav class="site-nav" id="siteNav" aria-label="Section navigation">
+  <div class="site-nav-inner">
+    <a href="#intro" class="site-nav-brand" aria-label="Back to the top">
+      <span class="site-nav-heart" aria-hidden="true">♥</span>
+      <span class="site-nav-days"><span id="navDaysTogether">0</span> days</span>
+    </a>
+
+    <div class="site-nav-links" id="siteNavLinks">
+      <a href="#timeline" class="site-nav-link" data-nav="timeline">Timeline</a>
+      <a href="#places" class="site-nav-link" data-nav="places">Places</a>
+      <a href="#things" class="site-nav-link" data-nav="things">Gallery</a>
+      <a href="#food" class="site-nav-link" data-nav="food">Food</a>
+      <a href="#vault" class="site-nav-link" data-nav="vault">The Vault</a>
+    </div>
+
+    <button class="site-nav-sound" id="soundToggle" type="button" aria-pressed="false" aria-label="Toggle soft sound effects">
+      <svg class="icon-sound-on" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
+        <path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M19 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <svg class="icon-sound-off" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
+        <path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+<section id="intro" class="intro">
+  <div class="intro-glow" aria-hidden="true"></div>
+  <div class="intro-content">
+    <p class="intro-eyebrow">Sample content, real front-end</p>
+    
+    <h1 class="intro-headline">Web Scrapbook<br>Front-End Demo</h1>
+    
+    <p class="intro-subline"><span>HTML</span><span class="intro-amp">+</span><span>CSS</span><span class="intro-amp">+</span><span>JavaScript</span></p>
+
+    <div class="counter" id="counter" aria-live="polite">
+      <div class="counter-unit">
+        <span class="counter-number" id="count-years">0</span>
+        <span class="counter-label">Years</span>
+      </div>
+      <div class="counter-unit">
+        <span class="counter-number" id="count-months">0</span>
+        <span class="counter-label">Months</span>
+      </div>
+      <div class="counter-unit">
+        <span class="counter-number" id="count-days">0</span>
+        <span class="counter-label">Days</span>
+      </div>
+      <div class="counter-unit">
+        <span class="counter-number" id="count-hours">0</span>
+        <span class="counter-label">Hours</span>
+      </div>
+      <div class="counter-unit">
+        <span class="counter-number" id="count-minutes">0</span>
+        <span class="counter-label">Minutes</span>
+      </div>
+      <div class="counter-unit">
+        <span class="counter-number" id="count-seconds">0</span>
+        <span class="counter-label">Seconds</span>
+      </div>
+    </div>
+
+    <button class="enter-btn" id="enterBtn" type="button">
+      <span>Begin</span>
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 1V19M7 19L1 13M7 19L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+
+<main class="timeline" id="timeline">
+
+  
+  <section class="chapter" id="phase-1">
+    <header class="chapter-header">
+      <span class="chapter-index">Chapter One</span>
+      <h2 class="chapter-title">Phase One</h2>
+    </header>
+
+    <div class="chapter-body">
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-01.jpg" alt="Placeholder image for Sample Milestone 01" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">January 01, 2024</span>
+          <h3 class="memory-title">Sample Milestone 01</h3>
+          <p class="memory-text">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-02.jpg" alt="Placeholder image for Sample Milestone 02" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">February 04, 2024</span>
+          <h3 class="memory-title">Sample Milestone 02</h3>
+          <p class="memory-text">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <img src="images/placeholder-03.jpg" alt="Placeholder image for Sample Milestone 03" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">March 07, 2024</span>
+          <h3 class="memory-title">Sample Milestone 03</h3>
+          <p class="memory-text">
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">April 10, 2024</span>
+          <h3 class="memory-title">Sample Milestone 04</h3>
+          <p class="memory-text">
+            Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-2.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">May 13, 2024</span>
+    <h3 class="memory-title">Sample Milestone 05</h3>
+    <p class="memory-text">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+          </p>
+  </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="left">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-1.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">June 16, 2024</span>
+    <h3 class="memory-title">Sample Milestone 06</h3>
+    <p class="memory-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+          </p>
+  </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="right">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-2.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">July 19, 2024</span>
+    <h3 class="memory-title">Sample Milestone 07</h3>
+    <p class="memory-text">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+          </p>
+  </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-04.jpg" alt="Placeholder image for Sample Milestone 08" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">August 22, 2024</span>
+          <h3 class="memory-title">Sample Milestone 08</h3>
+          <p class="memory-text">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memo-note reveal" data-note="1">
+        <button class="memo-note-face memo-note-front" type="button" aria-expanded="false">
+          <svg class="envelope-icon" width="42" height="30" viewBox="0 0 42 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="40" height="28" rx="2" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2 2L21 18L40 2" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Phase One summary</span>
+        </button>
+        <div class="memo-note-back">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
+          </p>
+          <button class="memo-note-close" type="button">Close</button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  
+  <section class="chapter" id="phase-2">
+    <header class="chapter-header">
+      <span class="chapter-index">Chapter Two</span>
+      <h2 class="chapter-title">Phase Two</h2>
+    </header>
+ 
+    <div class="chapter-body">
+ 
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">September 25, 2024</span>
+          <h3 class="memory-title">Sample Milestone 09</h3>
+          <p class="memory-text">
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-05.jpg" alt="Placeholder image for Sample Milestone 10" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">October 01, 2024</span>
+          <h3 class="memory-title">Sample Milestone 10</h3>
+          <p class="memory-text">
+            Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-2.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">November 04, 2024</span>
+          <h3 class="memory-title">Sample Milestone 11</h3>
+          <p class="memory-text">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">December 07, 2024</span>
+          <h3 class="memory-title">Sample Milestone 12</h3>
+          <p class="memory-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <img src="images/placeholder-06.jpg" alt="Placeholder image for Sample Milestone 13" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">January 10, 2025</span>
+          <h3 class="memory-title">Sample Milestone 13</h3>
+          <p class="memory-text">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-2.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">February 13, 2025</span>
+          <h3 class="memory-title">Sample Milestone 14</h3>
+          <p class="memory-text">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">March 16, 2025</span>
+          <h3 class="memory-title">Sample Milestone 15</h3>
+          <p class="memory-text">
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-2.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">April 19, 2025</span>
+    <h3 class="memory-title">Sample Milestone 16</h3>
+    <p class="memory-text">
+            Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
+          </p>
+  </div>
+      </article>  
+
+      
+      <article class="memo-note reveal" data-note="2">
+        <button class="memo-note-face memo-note-front" type="button" aria-expanded="false">
+          <svg class="envelope-icon" width="42" height="30" viewBox="0 0 42 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="40" height="28" rx="2" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2 2L21 18L40 2" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Phase Two summary</span>
+        </button>
+        <div class="memo-note-back">
+          <p>
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
+          </p>
+          <button class="memo-note-close" type="button">Close</button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  
+  <section class="chapter" id="phase-3">
+    <header class="chapter-header">
+      <span class="chapter-index">Chapter Three</span>
+      <h2 class="chapter-title">Phase Three</h2>
+    </header>
+
+    <div class="chapter-body">
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">May 22, 2025</span>
+          <h3 class="memory-title">Sample Milestone 17</h3>
+          <p class="memory-text">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-2.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">June 25, 2025</span>
+          <h3 class="memory-title">Sample Milestone 18</h3>
+          <p class="memory-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          <div class="video-wrap">
+            <video class="card-video" preload="metadata" playsinline muted>
+              
+              <source data-src="media/sample-1.mp4" type="video/mp4">
+              Your browser doesn't support this video — try opening the file directly.
+            </video>
+            <button class="video-play-btn" type="button" aria-label="Play video">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">July 01, 2025</span>
+          <h3 class="memory-title">Sample Milestone 19</h3>
+          <p class="memory-text">
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+          </p>
+        </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="left">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-2.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">August 04, 2025</span>
+    <h3 class="memory-title">Sample Milestone 20</h3>
+    <p class="memory-text">
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+  </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-07.jpg" alt="Placeholder image for Sample Milestone 21" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">September 07, 2025</span>
+          <h3 class="memory-title">Sample Milestone 21</h3>
+          <p class="memory-text">
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-1.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">October 10, 2025</span>
+    <h3 class="memory-title">Sample Milestone 22</h3>
+    <p class="memory-text">
+            Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.
+          </p>
+  </div>
+      </article>  
+
+
+      <article class="memory reveal" data-side="right">
+        <div class="memory-media">
+          
+          <img src="images/placeholder-08.jpg" alt="Placeholder image for Sample Milestone 23" loading="lazy">
+        </div>
+        <div class="memory-body">
+          <span class="date-badge">November 13, 2025</span>
+          <h3 class="memory-title">Sample Milestone 23</h3>
+          <p class="memory-text">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+          </p>
+        </div>
+      </article>
+
+
+      <article class="memory reveal" data-side="left">
+  <div class="memory-media">
+    <div class="video-wrap">
+      <video class="card-video" preload="metadata" playsinline muted>
+        
+        <source data-src="media/sample-2.mp4" type="video/mp4">
+        Your browser doesn't support this video — try opening the file directly.
+      </video>
+      <button class="video-play-btn" type="button" aria-label="Play video">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="memory-body">
+    <span class="date-badge">December 16, 2025</span>
+    <h3 class="memory-title">Sample Milestone 24</h3>
+    <p class="memory-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+          </p>
+  </div>
+      </article>  
+
+      
+      <article class="memo-note reveal" data-note="3">
+        <button class="memo-note-face memo-note-front" type="button" aria-expanded="false">
+          <svg class="envelope-icon" width="42" height="30" viewBox="0 0 42 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="40" height="28" rx="2" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2 2L21 18L40 2" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Phase Three summary</span>
+        </button>
+        <div class="memo-note-back">
+          <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+          </p>
+          <button class="memo-note-close" type="button">Close</button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+
+<section class="feature reveal" id="places">
+  <header class="section-header">
+    <span class="chapter-index">Collection One</span>
+    <h2 class="chapter-title">Featured Places</h2>
+  </header>
+
+  <div class="feature-grid places-grid">
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 01" data-expand-meta="January 01, 2024" data-expand-image="images/wide-01.jpg">
+      <div class="place-media">
+        <img src="images/wide-01.jpg" alt="Placeholder image for Sample Place 01" loading="lazy">
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 01</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+      </template>
+    </article>
+
+    
+
+    
+
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 02" data-expand-meta="February 04, 2024" data-expand-image="images/wide-02.jpg">
+      <div class="place-media">
+        <img src="images/wide-02.jpg" alt="Placeholder image for Sample Place 02" loading="lazy">
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 02</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+      </template>
+    </article>
+
+    
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 03" data-expand-meta="March 07, 2024">
+      <div class="place-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-1.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 03</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+      </template>
+    </article>
+
+   
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 04" data-expand-meta="April 10, 2024">
+      <div class="place-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-2.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 04</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+      </template>
+    </article>
+
+   
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 05" data-expand-meta="May 13, 2024">
+      <div class="place-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-1.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 05</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+      </template>
+    </article>
+
+   
+
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 06" data-expand-meta="June 16, 2024" data-expand-image="images/wide-06.jpg"> <div class="place-media">
+        <img src="images/wide-06.jpg" alt="Placeholder image for Sample Place 06" loading="lazy">
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 06</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      </template>
+    </article>
+
+   
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 07" data-expand-meta="July 19, 2024">
+      <div class="place-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-2.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 07</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+      </template>
+    </article>
+
+   
+
+    <article class="place-card expandable reveal" data-expand-title="Sample Place 08" data-expand-meta="August 22, 2024" data-expand-image="images/wide-08.jpg">
+      <div class="place-media">
+        <img src="images/wide-08.jpg" alt="Placeholder image for Sample Place 08" loading="lazy">
+      </div>
+      <div class="place-body">
+        <h3 class="place-name">Sample Place 08</h3>
+        <p class="place-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See the story</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+      </template>
+    </article>
+
+  </div>
+</section>
+
+
+<section class="feature" id="things">
+  <header class="section-header">
+    <span class="chapter-index">Collection Two</span>
+    <h2 class="chapter-title">Gallery</h2>
+  </header>
+
+  <div class="feature-grid things-grid">
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-01.jpg" alt="Placeholder image for Sample Moment 01" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 01</h3>
+        <p class="thing-date">September 25, 2024</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-02.jpg" alt="Placeholder image for Sample Moment 02" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 02</h3>
+        <p class="thing-date">October 01, 2024</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            <source data-src="media/sample-1.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 03</h3>
+        <p class="thing-date">November 04, 2024</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-04.jpg" alt="Placeholder image for Sample Moment 04" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 04</h3>
+        <p class="thing-date">December 07, 2024</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-05.jpg" alt="Placeholder image for Sample Moment 05" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 05</h3>
+        <p class="thing-date">January 10, 2025</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-06.jpg" alt="Placeholder image for Sample Moment 06" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 06</h3>
+        <p class="thing-date">February 13, 2025</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <img src="images/wide-07.jpg" alt="Placeholder image for Sample Moment 07" loading="lazy">
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 07</h3>
+        <p class="thing-date">March 16, 2025</p>
+      </div>
+    </article>
+    <article class="thing-card expandable reveal">
+      
+      <div class="thing-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            <source data-src="media/sample-2.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+        <button class="card-expand-btn thing-expand-btn" type="button" aria-label="View larger">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="thing-body">
+        <h3 class="thing-title">Sample Moment 08</h3>
+        <p class="thing-date">April 19, 2025</p>
+      </div>
+    </article>
+
+    
+
+  </div>
+</section>
+
+
+<section class="feature reveal" id="food">
+  <header class="section-header">
+    <span class="chapter-index">Collection Three</span>
+    <h2 class="chapter-title">Food Highlights</h2>
+  </header>
+
+  <div class="feature-grid food-grid">
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 01" data-expand-meta="May 22, 2025" data-expand-image="images/wide-01.jpg">
+      <div class="food-media">
+        <img src="images/wide-01.jpg" alt="Placeholder image for Sample Dish 01" loading="lazy">
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 01</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+      </template>
+    </article>
+
+    
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 02" data-expand-meta="June 25, 2025">
+      <div class="food-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-1.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 02</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+      </template>
+    </article>
+
+    
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 03" data-expand-meta="July 01, 2025">
+      <div class="food-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-2.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 03</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+      </template>
+    </article>
+
+    
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 04" data-expand-meta="August 04, 2025">
+      <div class="food-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-1.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 04</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+      </template>
+    </article>
+
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 05" data-expand-meta="September 07, 2025" data-expand-image="images/wide-05.jpg">
+      <div class="food-media">
+        <img src="images/wide-05.jpg" alt="Placeholder image for Sample Dish 05" loading="lazy">
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 05</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+      </template>
+    </article>
+
+        
+    <article class="food-card expandable reveal" data-expand-title="Sample Dish 06" data-expand-meta="October 10, 2025">
+      <div class="food-media">
+        <div class="video-wrap">
+          <video class="card-video" preload="metadata" playsinline muted>
+            
+            <source data-src="media/sample-2.mp4" type="video/mp4">
+            Your browser doesn't support this video — try opening the file directly.
+          </video>
+          <button class="video-play-btn" type="button" aria-label="Play video">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.5 9.4c1 .6 1 2.1 0 2.7L2.9 21.1c-1 .6-2.2-.1-2.2-1.3V1.7C.7.5 1.9-.2 2.9.4L18.5 9.4Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 06</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      </template>
+    </article>
+
+        <article class="food-card expandable reveal" data-expand-title="Sample Dish 07" data-expand-meta="November 13, 2025" data-expand-image="images/wide-07.jpg">
+      <div class="food-media">
+        <img src="images/wide-07.jpg" alt="Placeholder image for Sample Dish 07" loading="lazy">
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 07</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+      </template>
+    </article>
+
+        <article class="food-card expandable reveal" data-expand-title="Sample Dish 08" data-expand-meta="December 16, 2025" data-expand-image="images/wide-08.jpg">
+      <div class="food-media">
+        <img src="images/wide-08.jpg" alt="Placeholder image for Sample Dish 08" loading="lazy">
+      </div>
+      <div class="food-body">
+        <h3 class="food-name">Sample Dish 08</h3>
+        <p class="food-note">Short placeholder caption</p>
+        <button class="card-expand-btn" type="button">
+          <span>See more</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <template class="card-detail">
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+      </template>
+    </article>
+
+  </div>
+</section>
+
+
+<footer class="vault reveal" id="vault">
+  <div class="vault-content">
+    <div class="vault-burst" id="vaultBurst" aria-hidden="true"></div>
+
+    <div class="vault-locked" id="vaultLocked">
+      <svg width="30" height="34" viewBox="0 0 30 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="14" width="28" height="19" rx="2" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M7 14V9a8 8 0 0 1 16 0v5" stroke="currentColor" stroke-width="1.3"/>
+      </svg>
+      <h2 class="vault-title">The Vault</h2>
+      <p class="vault-hint">
+        Demo password: demo (lowercase)
+      </p>
+
+      <form class="vault-form" id="vaultForm">
+        <input type="password" id="vaultInput" class="vault-input" placeholder="Enter password" autocomplete="off">
+        <button type="submit" class="vault-submit">Unlock</button>
+      </form>
+      <p class="vault-error" id="vaultError" role="alert"></p>
+    </div>
+
+    <div class="vault-unlocked" id="vaultUnlocked" hidden>
+      <p class="vault-unlocked-eyebrow">Sample Message</p>
+      <div class="vault-letter" id="vaultLetter">
+        
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+<div class="detail-modal" id="detailModal" aria-hidden="true">
+  <div class="detail-modal-backdrop" id="detailModalBackdrop"></div>
+  <div class="detail-modal-panel" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+    <button class="detail-modal-close" id="detailModalClose" type="button" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="detail-modal-media" id="detailModalMedia" hidden>
+      <img id="detailModalImage" src="" alt="" hidden>
+    </div>
+    <div class="detail-modal-icon" id="detailModalIconWrap" hidden>
+      <span id="detailModalIcon"></span>
+    </div>
+    <div class="detail-modal-body">
+      <span class="date-badge" id="detailModalMeta" hidden></span>
+      <h3 class="detail-modal-title" id="detailModalTitle"></h3>
+      <div class="detail-modal-text" id="detailModalText"></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

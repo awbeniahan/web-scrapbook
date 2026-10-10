@@ -1,0 +1,1368 @@
+/* ==================================================================
+   DESIGN TOKENS
+   Palette: warm paper background, soft ink text, a dusty-rose and
+   sage accent pair (kept deliberately away from the usual
+   cream + terracotta combo), muted gold for date badges.
+   ================================================================== */
+:root {
+  /* Pastel pink palette: cream-white base blending into a soft blush */
+  --paper:      #FFFDFB;
+  --paper-dim:  #FFF3F6;
+  --blush:      #FFEBEF;
+  --ink:        #3A2E31;
+  --ink-soft:   #8A757B;
+  --ink-faint:  #C3AFB6;
+  --rose:       #F3B8C4;
+  --rose-deep:  #D98CA0;
+  --sage:       #C79FB0;
+  --gold:       #E3A6AE;
+  --line:       #F3D9E0;
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --nav-h: 3.75rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  /* Soft cream base — the watercolor blooms (.bg-orbs) layer the
+     pink variation on top of this */
+  background: #FFFCFA;
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+::selection { background: var(--rose); color: var(--paper); }
+
+:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 3px;
+}
+
+/* ==================================================================
+   AMBIENT BACKGROUND — soft watercolor wash
+   Several large, irregularly-shaped, heavily-blurred gradient
+   "blooms" layered on top of each other in varied pink/rose/cream
+   tones. Each has an organic (non-circular) border-radius and its
+   own slow drift/morph loop, giving the impression of watercolor
+   clouds spreading and shifting rather than clean static orbs.
+   Purely decorative, fixed to the viewport.
+   ================================================================== */
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  filter: blur(52px);
+  opacity: 0.6;
+  /* Static organic (non-circular) shape — NOT animated. Animating
+     border-radius forces the browser to repaint every frame instead
+     of using cheap GPU compositing, which is what caused the
+     jittery/fast-forward motion on lower-powered GPUs. Only
+     `transform` is animated below, which stays smooth everywhere. */
+  will-change: transform;
+}
+
+.orb-1 {
+  width: 46vw; height: 42vw;
+  top: -14%; left: -10%;
+  background: radial-gradient(circle at 35% 35%, #FFD9E3 0%, #FFEBEF 55%, transparent 75%);
+  border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
+  animation: bloom-drift-1 28s ease-in-out infinite;
+}
+.orb-2 {
+  width: 40vw; height: 38vw;
+  top: 22%; right: -14%;
+  background: radial-gradient(circle at 60% 40%, #F3B8C4 0%, #FBDCE3 55%, transparent 75%);
+  border-radius: 60% 40% 35% 65% / 55% 60% 40% 45%;
+  opacity: 0.5;
+  animation: bloom-drift-2 33s ease-in-out infinite;
+}
+.orb-3 {
+  width: 42vw; height: 40vw;
+  bottom: -16%; left: 10%;
+  background: radial-gradient(circle at 45% 55%, #FFE3EC 0%, #FFF6F3 55%, transparent 78%);
+  border-radius: 35% 65% 55% 45% / 60% 45% 55% 40%;
+  animation: bloom-drift-3 36s ease-in-out infinite;
+}
+.orb-4 {
+  width: 30vw; height: 30vw;
+  bottom: 15%; right: 12%;
+  background: radial-gradient(circle at 50% 50%, #E9BFCB 0%, transparent 72%);
+  border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%;
+  opacity: 0.35;
+  animation: bloom-drift-1 40s ease-in-out infinite reverse;
+}
+
+/* Transform-only — translate/scale/rotate all run on the GPU
+   compositor without triggering layout or paint, so these stay
+   smooth even on modest hardware. */
+@keyframes bloom-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%      { transform: translate(5vw, 6vh) scale(1.12) rotate(8deg); }
+  66%      { transform: translate(-4vw, 3vh) scale(0.94) rotate(-6deg); }
+}
+@keyframes bloom-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50%      { transform: translate(-7vw, -5vh) scale(1.18) rotate(-10deg); }
+}
+@keyframes bloom-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  40%      { transform: translate(4vw, -4vh) scale(1.08) rotate(7deg); }
+  75%      { transform: translate(-5vw, 2vh) scale(0.92) rotate(-5deg); }
+}
+
+/* ==================================================================
+   AMBIENT BACKGROUND — floating particle field
+   Continuously spawned by script.js: hearts, petals, sparkles that
+   drift up the page with varied size/speed/rotation for a rich,
+   layered feel. Each removes itself after its animation ends.
+   ================================================================== */
+.bg-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.drift-particle {
+  position: absolute;
+  bottom: -5vh;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: drift-up;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes drift-up {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  10%  { opacity: var(--peak-opacity, 0.6); }
+  50%  { transform: translate(var(--sway, 20px), -55vh) rotate(var(--rot, 90deg)); }
+  90%  { opacity: var(--peak-opacity, 0.6); }
+  100% { opacity: 0; transform: translate(0, -110vh) rotate(var(--rot-end, 180deg)); }
+}
+
+/* ==================================================================
+   PINNED NAV
+   Fixed to the top of the viewport, hidden (slid up) while on the
+   landing screen, sliding into view once the user scrolls past it
+   (toggled via .is-visible by script.js). Translucent + blurred so
+   the watercolor background stays visible behind it.
+   ================================================================== */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: var(--nav-h);
+  transform: translateY(-100%);
+  transition: transform 0.4s var(--ease), box-shadow 0.3s ease;
+  background: rgba(255, 253, 251, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(243, 184, 196, 0.25);
+}
+.site-nav.is-visible { transform: translateY(0); }
+.site-nav.is-scrolled { box-shadow: 0 10px 30px -20px rgba(217, 140, 160, 0.45); }
+
+.site-nav-inner {
+  max-width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.site-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: transform 0.3s var(--spring);
+}
+.site-nav-brand:hover { transform: scale(1.05); }
+.site-nav-heart {
+  color: var(--rose-deep);
+  font-size: 1rem;
+  animation: brand-beat 1.8s ease-in-out infinite;
+}
+@keyframes brand-beat {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.2); }
+}
+.site-nav-days {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+.site-nav-links::-webkit-scrollbar { display: none; }
+
+.site-nav-link {
+  position: relative;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.1rem;
+  transition: color 0.3s ease;
+}
+.site-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 1.5px;
+  background: var(--rose-deep);
+  transition: right 0.3s var(--ease);
+}
+.site-nav-link:hover { color: var(--ink); }
+.site-nav-link.is-active {
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+.site-nav-link.is-active::after { right: 0; }
+
+.site-nav-sound {
+  flex-shrink: 0;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--rose-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring), background 0.3s ease;
+}
+.site-nav-sound:hover { transform: scale(1.1); background: var(--blush); }
+.site-nav-sound:active { transform: scale(0.88); }
+.icon-sound-on { display: none; }
+.site-nav-sound[aria-pressed="true"] .icon-sound-on { display: block; }
+.site-nav-sound[aria-pressed="true"] .icon-sound-off { display: none; }
+
+@media (max-width: 720px) {
+  .site-nav-days { display: none; }
+  .site-nav-inner { gap: 0.9rem; padding: 0 0.9rem; }
+}
+
+/* ==================================================================
+   THREAD — the decorative stitched spine running down the page,
+   softly pulsing with a heart marker that travels along it as the
+   page is scrolled (position set by script.js).
+   ================================================================== */
+.thread {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.thread line {
+  stroke: var(--rose);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 9;
+  stroke-linecap: round;
+  animation: thread-glow 3.4s ease-in-out infinite;
+}
+@keyframes thread-glow {
+  0%, 100% { stroke-opacity: 0.35; }
+  50%      { stroke-opacity: 0.9; }
+}
+
+.thread-heart {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  color: var(--rose-deep);
+  font-size: 0.75rem;
+  z-index: 0;
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(217, 140, 160, 0.7);
+  transition: top 0.15s linear;
+}
+
+@media (max-width: 720px) {
+  /* Mobile: keep the stitched thread in the left margin (not behind the
+     content) so the cards stay perfectly centered. */
+  .thread { left: 10px; }
+  .thread-heart { left: 10px; }
+}
+
+/* ==================================================================
+   1. INTRO
+   ================================================================== */
+.intro {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Ambient pulsing glow seated behind the names */
+.intro-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(60vw, 620px);
+  height: min(60vw, 620px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(243, 184, 196, 0.55), transparent 70%);
+  filter: blur(50px);
+  z-index: -1;
+  animation: glow-pulse 5s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.9;  transform: translate(-50%, -50%) scale(1.12); }
+}
+
+.intro-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Each direct child rises in on its own beat for a choreographed
+   entrance, instead of the whole block fading in at once. */
+.intro-content > * {
+  opacity: 0;
+  animation: intro-rise 0.9s var(--spring) forwards;
+}
+.intro-content > .intro-eyebrow  { animation-delay: 0.1s; }
+.intro-content > .intro-headline { animation-delay: 0.3s; }
+.intro-content > .intro-subline  { animation-delay: 0.5s; }
+.intro-content > .counter        { animation-delay: 0.65s; }
+.intro-content > .enter-btn      { animation-delay: 0.9s; }
+
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(26px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.intro-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+.intro-headline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.intro-subline {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+  color: var(--ink-soft);
+  margin-top: -0.8rem;
+}
+
+.intro-amp {
+  color: var(--rose-deep);
+  font-size: 0.8em;
+}
+
+.counter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.9rem, 3vw, 2.2rem);
+  padding-top: 0.5rem;
+  max-width: 34rem;
+}
+
+.counter-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 3.2rem;
+}
+
+.counter-number {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4.4vw, 2.4rem);
+  font-weight: 600;
+  color: var(--rose-deep);
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  transition: transform 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+/* Triggered briefly via JS (.tick class) each time a unit updates,
+   giving every changing number a soft, smooth "pop" instead of a
+   jarring snap. */
+.counter-number.tick {
+  transform: scale(1.18);
+  color: var(--gold);
+}
+
+.counter-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.enter-btn {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  padding: 0.6rem 0.2rem;
+  border-bottom: 1px solid var(--ink);
+  transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s var(--spring), gap 0.3s ease;
+}
+.enter-btn:hover {
+  color: var(--rose-deep);
+  border-color: var(--rose-deep);
+  gap: 0.9rem;
+  transform: scale(1.06);
+}
+.enter-btn:active { transform: scale(0.92); }
+.enter-btn svg { animation: bob 2.2s ease-in-out infinite; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ==================================================================
+   SHARED RIPPLE — spawned by script.js inside any button on click.
+   Positioned relative to the button, expands and fades out.
+   ================================================================== */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple-out 0.6s ease-out forwards;
+}
+@keyframes ripple-out {
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* ==================================================================
+   2. TIMELINE / CHAPTERS
+   ================================================================== */
+.timeline {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  scroll-margin-top: var(--nav-h);
+}
+
+.chapter { padding-top: 2rem; }
+.chapter + .chapter { margin-top: 4rem; }
+
+.chapter-header,
+.section-header {
+  position: sticky;
+  top: var(--nav-h);
+  padding: 1.4rem 0;
+  background: linear-gradient(var(--paper) 70%, transparent);
+  z-index: 3;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.chapter-index {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.chapter-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: var(--ink);
+}
+
+.chapter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  padding: 1rem 0 2rem;
+}
+
+/* ---------------- Memory cards ---------------- */
+.memory {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.2rem;
+  align-items: center;
+  background: var(--paper);
+  perspective: 900px;
+}
+
+.memory[data-side="left"] .memory-media { order: 2; }
+.memory[data-side="left"] .memory-body { order: 1; text-align: right; }
+.memory[data-side="left"] .date-badge { align-self: flex-end; }
+
+.memory-media {
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px -22px rgba(217, 140, 160, 0.35);
+  border: 1px solid var(--line);
+  transition: transform 0.35s var(--spring), box-shadow 0.35s ease;
+  animation: idle-float 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+/* Paused by script.js (via .tilting) while the cursor is over the
+   card, so the JS-driven tilt transform doesn't fight the idle
+   animation for control of `transform`. */
+.memory-media.tilting { animation-play-state: paused; }
+.memory-media:hover {
+  box-shadow: 0 30px 60px -18px rgba(217, 140, 160, 0.6);
+}
+@keyframes idle-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.memory-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* ==================================================================
+   VIDEO CARDS — click-to-play with audio
+   Drop-in replacement for an <img> inside any -media container
+   (.memory-media, .place-media, .food-media, .thing-media). Starts
+   on its poster frame with a soft play button over it; clicking
+   starts playback with the video's own embedded sound and reveals
+   native controls (script.js handles the click behavior).
+   ================================================================== */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.card-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #2B2A28;
+  cursor: pointer;
+}
+.video-play-btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: none;
+  background: rgba(255, 253, 251, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: var(--rose-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.2rem; /* optically centers the play triangle */
+  cursor: pointer;
+  box-shadow: 0 14px 32px -16px rgba(58, 46, 49, 0.55);
+  transition: transform 0.3s var(--spring), background 0.3s ease, opacity 0.3s ease;
+  animation: brand-beat 2.6s ease-in-out infinite;
+}
+.video-play-btn:hover {
+  transform: scale(1.12);
+  background: var(--blush);
+}
+.video-play-btn:active { transform: scale(0.9); }
+/* Once playback starts, script.js adds .is-playing to the wrap and
+   the custom button fades out in favor of the video's native
+   controls (needed for pause/seek/volume). */
+.video-wrap.is-playing .video-play-btn {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+}
+
+.memory-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.memory[data-side="left"] .memory-body { align-items: flex-end; }
+
+.date-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  border: 1px solid var(--gold);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+.memory-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--ink);
+}
+
+.memory-text {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 34ch;
+}
+
+/* ---------------- Notes ---------------- */
+.memo-note {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  perspective: 1400px;
+  min-height: 3.5rem;
+}
+
+.memo-note-front {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--paper-dim);
+  border: 1px dashed var(--rose);
+  color: var(--rose-deep);
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring), background 0.3s ease, box-shadow 0.3s ease;
+}
+.memo-note-front:hover {
+  transform: translateY(-5px) scale(1.03);
+  background: var(--blush);
+  box-shadow: 0 16px 30px -14px rgba(217, 140, 160, 0.55);
+}
+.memo-note-front:active { transform: translateY(-2px) scale(0.95); }
+.envelope-icon { flex-shrink: 0; }
+
+.memo-note-back {
+  display: none;
+  max-width: 480px;
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 2rem 2.2rem;
+  text-align: center;
+  box-shadow: 0 20px 50px -26px rgba(43, 42, 40, 0.4);
+}
+
+.memo-note-back p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+
+.memo-note-close {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s, border-color 0.25s;
+}
+.memo-note-close:hover { color: var(--rose-deep); border-color: var(--rose-deep); }
+
+/* Open state, toggled via JS with the .is-open class */
+.memo-note.is-open .memo-note-front { display: none; }
+.memo-note.is-open .memo-note-back {
+  display: block;
+  animation: envelope-open 0.7s var(--spring) both;
+}
+@keyframes envelope-open {
+  0%   { opacity: 0; transform: rotateX(-70deg) rotate(-6deg) scale(0.7); }
+  60%  { opacity: 1; transform: rotateX(8deg) rotate(2deg) scale(1.04); }
+  100% { opacity: 1; transform: rotateX(0) rotate(0) scale(1); }
+}
+
+/* Small sparkle burst spawned by script.js the instant a love note
+   opens or the vault unlocks. Positioned absolutely by JS, then
+   removed once the animation completes. */
+.sparkle-burst {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  font-size: 1rem;
+  opacity: 0.9;
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: sparkle-fly 0.9s ease-out forwards;
+}
+@keyframes sparkle-fly {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) translate(0, 0); }
+  25%  { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1)
+      translate(var(--bx, 40px), var(--by, -40px)) rotate(var(--brot, 90deg));
+  }
+}
+
+/* ==================================================================
+   SCROLL REVEAL
+   Elements start hidden/offset; .in-view is added by
+   IntersectionObserver in script.js.
+   ================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==================================================================
+   3. FEATURE SECTIONS — Places / Things We've Done / Food.
+   Share the timeline's max-width and header treatment, but each has
+   its own grid layout.
+   ================================================================== */
+.feature {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 5rem auto 0;
+  padding: 0 1.5rem;
+  scroll-margin-top: var(--nav-h);
+}
+
+.feature-grid {
+  display: grid;
+  gap: 1.6rem;
+  padding: 1rem 0 2rem;
+}
+.places-grid,
+.food-grid,
+.things-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+/* ---- Places, Food, & Things share the same photo-card layout ---- */
+.place-card,
+.food-card,
+.thing-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer; /* the whole card opens the detail view, not just its button */
+  transition: transform 0.35s var(--spring), box-shadow 0.35s ease;
+}
+.place-card:hover,
+.food-card:hover,
+.thing-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 26px 50px -24px rgba(217, 140, 160, 0.55);
+}
+.place-media,
+.food-media,
+.thing-media { aspect-ratio: 4 / 3; overflow: hidden; }
+.thing-media { position: relative; }
+.place-media img,
+.food-media img,
+.thing-media img,
+.place-media .card-video,
+.food-media .card-video,
+.thing-media .card-video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.place-card:hover .place-media img,
+.food-card:hover .food-media img,
+.thing-card:hover .thing-media img,
+.place-card:hover .place-media .card-video,
+.food-card:hover .food-media .card-video,
+.thing-card:hover .thing-media .card-video { transform: scale(1.08); }
+
+.place-body,
+.food-body,
+.thing-body { padding: 1rem 1.2rem 1.3rem; display: flex; flex-direction: column; align-items: flex-start; flex: 1; }
+.place-name,
+.food-name,
+.thing-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.35rem;
+}
+.place-note,
+.food-note,
+.thing-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 0.9rem;
+}
+
+/* ---- Random Moments cards: photo/video + title + date only ---- */
+.thing-body { padding: 0.9rem 1.1rem 1.1rem; }
+.thing-title { margin-bottom: 0.2rem; }
+.thing-date {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ---- Shared "See more" / "See the story" expand trigger, used on
+   Places, Things, and Food cards. margin-top: auto pins it to the
+   bottom of .place-body/.food-body/.thing-body (a flex column) so
+   it lands in the same spot on every card in a row regardless of
+   how many lines the note text above it wraps to — rather than
+   sitting right under text of whatever length happens to precede
+   it. ---- */
+.card-expand-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0.3rem 0;
+  margin-top: auto;
+  color: var(--rose-deep);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring), gap 0.3s ease, color 0.3s ease;
+}
+.card-expand-btn svg { transition: transform 0.3s var(--spring); }
+.card-expand-btn:hover { gap: 0.65rem; color: var(--gold); transform: translateX(2px); }
+.card-expand-btn:active { transform: translateX(2px) scale(0.92); }
+
+/* ---- Random Moments has no body/text area for a "See more" link,
+   so its expand trigger sits as a small round button over the
+   corner of the photo/video itself instead. Placed outside
+   .video-wrap in the HTML so it never fights with the video's own
+   click-to-play behavior — it's a sibling, not a child, of the
+   video. ---- */
+.thing-expand-btn {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 2;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  justify-content: center;
+  background: rgba(255, 253, 251, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 10px 24px -14px rgba(58, 46, 49, 0.55);
+  opacity: 0.85;
+  padding: 0;
+  margin: 0;
+}
+.thing-expand-btn:hover {
+  color: var(--rose-deep);
+  opacity: 1;
+  transform: scale(1.12);
+}
+.thing-expand-btn:active { transform: scale(0.9); }
+
+/* ==================================================================
+   SHARED DETAIL MODAL
+   Fixed overlay populated by script.js when a card-expand-btn is
+   pressed. Backdrop dims/blurs the page; the panel scales in from
+   a soft, slightly-squashed state with a spring for a lively,
+   theatrical (but still elegant) reveal. Closing reverses it and
+   returns the person to the page exactly where they left it.
+   ================================================================== */
+.detail-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  visibility: hidden;
+  pointer-events: none;
+}
+.detail-modal.is-open { visibility: visible; pointer-events: auto; }
+
+.detail-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 46, 49, 0.38);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.detail-modal.is-open .detail-modal-backdrop { opacity: 1; }
+
+.detail-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: min(90vw, 860px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-radius: 18px;
+  box-shadow: 0 40px 90px -30px rgba(58, 46, 49, 0.5);
+  opacity: 0;
+  transform: scale(0.85) translateY(24px);
+  transition: opacity 0.4s var(--spring), transform 0.4s var(--spring);
+}
+.detail-modal.is-open .detail-modal-panel {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.detail-modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 2;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s var(--spring), background 0.3s ease;
+}
+.detail-modal-close:hover { transform: rotate(90deg) scale(1.1); background: var(--blush); }
+.detail-modal-close:active { transform: rotate(90deg) scale(0.88); }
+
+/* Shows the FULL photo, uncropped, sized as large as the viewport
+   comfortably allows — not the fixed 16:10 crop this used to force
+   every image into (which chopped a lot off portrait-oriented
+   photos and made "expanding" a card barely look any bigger). The
+   image's own natural aspect ratio decides the box; a soft on-theme
+   fill covers any leftover space around it, instead of looking like
+   an empty/broken box on photos that don't happen to match the
+   panel's width.
+   :not([hidden]) matters here — `display` set unconditionally on
+   this class would override the hidden attribute script.js uses to
+   hide this area for text-only cards, showing an empty box. */
+.detail-modal-media:not([hidden]) {
+  position: relative; /* anchors the video play button below when a video is shown here instead of a photo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 72vh;
+  background: var(--paper-dim);
+}
+/* The <img> only actually leaves the layout once BOTH the attribute
+   and this display rule agree it's hidden — script.js sets `hidden`
+   on it whenever a card isn't showing a static photo (e.g. a video
+   card), but without this same :not([hidden]) guard the image would
+   stay in the flex row as an empty phantom column even with an
+   empty src, which is exactly what produced the odd two-column
+   "grey box + video" layout with stale leftover text in it. */
+.detail-modal-media img:not([hidden]) {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+}
+
+/* A card's own .video-wrap is moved into the modal (see script.js)
+   instead of a static image. This gives the wrap a real, fixed-size
+   box (rather than removing its box with display:contents, which
+   has a history of rendering bugs in Safari specifically — videos
+   inside a display:contents ancestor can fail to paint at all even
+   though they've loaded successfully, which is exactly the blank-
+   thumbnail bug this replaces) and turns it into its own centering
+   flex container. Since both the video AND the play button center
+   within this same fixed box, their centers always coincide — the
+   button lands correctly on the video regardless of whether the
+   clip is portrait or landscape. */
+.detail-modal-media .video-wrap {
+  position: relative;
+  width: 100%;
+  height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.detail-modal-media .video-wrap .card-video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
+  object-fit: contain;
+  /* .card-video's base rule gives it a dark charcoal background —
+     meant as a loading placeholder behind the small card thumbnail.
+     object-fit: contain can leave letterbox gaps inside the video's
+     own box (e.g. a portrait clip whose box ends up slightly wider
+     than its frame), and those gaps are filled by the video
+     element's OWN background, not the modal's — so without this
+     override those gaps show dark charcoal instead of matching the
+     modal's soft theme color. */
+  background: var(--paper-dim);
+}
+
+.detail-modal-icon:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2.4rem;
+  font-size: 3.4rem;
+  animation: brand-beat 2.4s ease-in-out infinite;
+}
+
+.detail-modal-body { padding: 1.6rem 1.8rem 2rem; }
+.detail-modal-body .date-badge { margin-bottom: 1.75rem; }
+.detail-modal-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 0.9rem;
+  color: var(--ink);
+}
+.detail-modal-text p {
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  margin-bottom: 0.9rem;
+}
+.detail-modal-text p:last-child { margin-bottom: 0; }
+
+/* Prevents the page from scrolling behind an open modal */
+body.modal-open { overflow: hidden; }
+
+@media (max-width: 560px) {
+  .detail-modal-panel { max-height: 90vh; }
+  .detail-modal-body { padding: 1.3rem 1.3rem 1.6rem; }
+}
+
+/* ==================================================================
+   4. THE VAULT
+   ================================================================== */
+.vault {
+  position: relative;
+  z-index: 1;
+  margin-top: 5rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 5rem 1.5rem 4.5rem;
+  scroll-margin-top: var(--nav-h);
+}
+
+.vault-content {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Container script.js fills with confetti/heart particles the
+   instant the correct password is entered — the "oomph" payoff. */
+.vault-burst {
+  position: absolute;
+  inset: -4rem -2rem auto -2rem;
+  height: 12rem;
+  pointer-events: none;
+  z-index: 5;
+}
+.confetti-piece {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  animation: confetti-fly 1.3s ease-out forwards;
+}
+@keyframes confetti-fly {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.5) translate(0, 0) rotate(0deg); }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1)
+      translate(var(--cx, 60px), var(--cy, -60px)) rotate(var(--crot, 200deg));
+  }
+}
+
+.vault-locked svg { color: var(--rose); margin-bottom: 1.2rem; }
+
+.vault-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.vault-hint {
+  font-size: 0.85rem;
+  color: #C9C4B8;
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
+}
+
+.vault-form {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.vault-input {
+  flex: 1;
+  background: rgba(250, 247, 242, 0.08);
+  border: 1px solid rgba(250, 247, 242, 0.25);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+.vault-input::placeholder { color: #8B867B; }
+.vault-input:focus { border-color: var(--rose); }
+
+.vault-submit {
+  position: relative;
+  overflow: hidden;
+  background: var(--rose);
+  color: var(--ink);
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.4rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s var(--spring), box-shadow 0.3s ease;
+}
+.vault-submit:hover {
+  background: var(--gold);
+  transform: scale(1.06);
+  box-shadow: 0 10px 24px -14px rgba(217, 140, 160, 0.6);
+}
+.vault-submit:active { transform: scale(0.9); }
+
+.vault-error {
+  min-height: 1.4rem;
+  font-size: 0.8rem;
+  color: var(--rose);
+  margin-top: 0.9rem;
+}
+
+.vault-unlocked {
+  position: relative;
+  animation: vault-reveal 0.8s var(--spring) both;
+}
+@keyframes vault-reveal {
+  0%   { opacity: 0; transform: scale(0.85); filter: brightness(1.6); }
+  60%  { opacity: 1; transform: scale(1.03); filter: brightness(1.25); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+.vault-unlocked-eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 1rem;
+}
+
+.vault-letter p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.75;
+  margin-bottom: 1.3rem;
+}
+
+.vault-signoff { color: var(--rose); }
+
+/* ==================================================================
+   RESPONSIVE — collapse to a single column on narrow screens
+   ================================================================== */
+@media (max-width: 720px) {
+  .timeline { padding: 0 1.5rem; } /* symmetric — matches the other sections */
+
+  .memory {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .memory[data-side="left"] .memory-media,
+  .memory[data-side="left"] .memory-body { order: initial; }
+  .memory-body,
+  .memory[data-side="left"] .memory-body {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .memory[data-side="left"] .date-badge { align-self: flex-start; }
+
+  .memory-media img { aspect-ratio: 16 / 11; }
+
+  .vault-form { flex-direction: column; }
+
+  .feature { margin-top: 3.5rem; }
+  .places-grid,
+  .food-grid,
+  .things-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .places-grid,
+  .food-grid,
+  .things-grid { grid-template-columns: 1fr; }
+
+  /* Hero counter: a tidy 3 x 2 grid instead of 5 units + 1 orphan */
+  .counter {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem 0.8rem;
+    width: 100%;
+    max-width: 18rem;
+    margin: 0 auto;
+    justify-items: center;
+  }
+}
+
+/* ==================================================================
+   CLICK-TO-POP HEARTS
+   Spawned by script.js at the click coordinates, then removed from
+   the DOM once the animation finishes (see script.js). Fixed
+   positioning + pointer-events:none keeps them purely decorative.
+   ================================================================== */
+.click-heart {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  font-size: var(--size, 1.3rem);
+  opacity: 0.85;
+  transform: translate(-50%, -50%) scale(0.6);
+  animation: heart-pop var(--dur, 1.1s) var(--ease) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes heart-pop {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.5) translate(0, 0) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) translate(calc(var(--dx, 0px) * 0.3), -14px) rotate(calc(var(--rot, 0deg) * 0.3));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1) translate(var(--dx, 0px), var(--dy, -70px)) rotate(var(--rot, 0deg));
+  }
+}
+/* Guard against decorative elements causing sideways scroll on phones */
+html { overflow-x: clip; }
